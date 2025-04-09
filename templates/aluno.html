@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Bem-vindo, {{ usuario.nome }}</h2>
+<h3>📚 Recomendações para a série {{ usuario.serie }}</h3>
+<div class="grid">
+{% for livro in livros %}
+    <div class="card">
+        <img src="{{ livro.capa }}" alt="Capa" style="width:100%;">
+        <h4>{{ livro.titulo }}</h4>
+        <p>{{ livro.autor }}</p>
+        <a href="/baixar/{{ livro.id }}" class="btn">📥 Baixar</a>
+    </div>
+{% endfor %}
+</div>
+<h3>📖 Seus Últimos Livros</h3>
+<ul>
+{% for acesso in acessos %}
+    <li>{{ acesso.livro.titulo }} - Status: {{ acesso.status }}</li>
+{% endfor %}
+</ul>
+{% endblock %}
