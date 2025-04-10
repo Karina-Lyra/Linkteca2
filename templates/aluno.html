@@ -1,21 +1,28 @@
 {% extends 'base.html' %}
+{% block title %}Painel do Aluno - LinkTeca{% endblock %}
 {% block content %}
-<h2>Bem-vindo, {{ usuario.nome }}</h2>
-<h3>📚 Recomendações para a série {{ usuario.serie }}</h3>
-<div class="grid">
-{% for livro in livros %}
-    <div class="card">
-        <img src="{{ livro.capa }}" alt="Capa" style="width:100%;">
-        <h4>{{ livro.titulo }}</h4>
-        <p>{{ livro.autor }}</p>
-        <a href="/baixar/{{ livro.id }}" class="btn">📥 Baixar</a>
+<div class="container">
+    <div class="logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="LinkTeca Logo">
     </div>
-{% endfor %}
+    <h1><i class="fas fa-book-reader"></i> <span>LinkTeca</span><br>Bem-vindo, {{ usuario.nome }}</h1>
+    <h2>📚 Recomendações para a série {{ usuario.serie }}</h2>
+    <div class="grid">
+    {% for livro in livros %}
+        <div class="card">
+            <img src="{{ livro.capa }}" alt="Capa" style="width:100%; border-radius: 4px;">
+            <h4>{{ livro.titulo }}</h4>
+            <p>{{ livro.autor }}</p>
+            <a href="/baixar/{{ livro.id }}" class="btn">📥 Baixar</a>
+        </div>
+    {% endfor %}
+    </div>
+
+    <h2 style="margin-top: 30px;">📖 Seus Últimos Livros</h2>
+    <ul>
+    {% for acesso in acessos %}
+        <li>{{ acesso.livro.titulo }} - Status: {{ acesso.status }}</li>
+    {% endfor %}
+    </ul>
 </div>
-<h3>📖 Seus Últimos Livros</h3>
-<ul>
-{% for acesso in acessos %}
-    <li>{{ acesso.livro.titulo }} - Status: {{ acesso.status }}</li>
-{% endfor %}
-</ul>
 {% endblock %}

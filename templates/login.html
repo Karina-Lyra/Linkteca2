@@ -113,7 +113,7 @@
         <div class="logo">
             <img src="{{ url_for('static', filename='logo.png') }}" alt="LinkTeca Logo">
         </div>
-        <h1><i class="fas fa-book-reader"></i> <span>LinkTeca</span><br>Plataforma de Leitura Compartilhada</h1>
+        <h1><i class="fas fa-book-reader"></i> <span>LinkTeca</span><br><span style="font-size: 0.7em;">Plataforma de Leitura Compartilhada</span></h1>
         <form class="login-form" method="POST" action="/login">
             <input type="text" id="nome" name="nome" placeholder="👤 Nome" required>
             <input type="password" id="senha" name="senha" placeholder="🔒 Senha" required>
@@ -124,7 +124,6 @@
         </form>
         <div class="links">
             <a href="/recuperar_senha"><i class="fas fa-key"></i> Recuperar Senha</a>
-            <a href="/cadastrar"><i class="fas fa-user-plus"></i> Cadastrar</a>
         </div>
     </div>
 </body>
