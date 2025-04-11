@@ -51,11 +51,14 @@ class AcessoLivro(db.Model):
     comentario = db.Column(db.Text, nullable=True)
     avaliacao = db.Column(db.Integer, nullable=True)  # 1 a 5 estrelas
 
+class Instituicao(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(100), nullable=False)
+    telefone = db.Column(db.String(50), nullable=True)
+    email = db.Column(db.String(100), nullable=True)
+
 # CRIAR BANCO AUTOMATICAMENTE SE NÃO EXISTIR
-@app.before_request
-def criar_banco():
-    if not os.path.exists('linkteca.db'):
-        db.create_all()
+
 
 # ROTAS PRINCIPAIS
 @app.route('/')
@@ -87,13 +90,21 @@ def painel():
     if 'usuario_id' not in session:
         return redirect('/login')
     usuario = Usuario.query.get(session['usuario_id'])
-    if usuario.tipo == 'professor':
+
+    if usuario.tipo == 'admin':
+        instituicao = Instituicao.query.first()
+        return render_template('admin.html', admin=usuario, instituicao=instituicao)
+
+    elif usuario.tipo == 'professor':
         return render_template('professor.html', usuario=usuario)
+
     elif usuario.tipo == 'aluno':
         livros = Livro.query.join(Recomendacao).filter(Recomendacao.serie == usuario.serie).all()
         acessos = AcessoLivro.query.filter_by(usuario_id=usuario.id).order_by(AcessoLivro.data.desc()).limit(5).all()
         return render_template('aluno.html', usuario=usuario, livros=livros, acessos=acessos)
+
     return redirect('/login')
+
 
 @app.route('/recomendar', methods=['POST'])
 def recomendar():
@@ -157,5 +168,18 @@ def cadastrar():
         return redirect('/login')
     return render_template('cadastro.html')
 
+def criar_admin_padrao():
+    admin_existente = Usuario.query.filter_by(nome='Administrador', tipo='admin').first()
+    if not admin_existente:
+        admin = Usuario(nome='Administrador', senha='admin123', tipo='admin')
+        db.session.add(admin)
+        db.session.commit()
+        print("✅ Usuário Administrador criado.")
+    else:
+        print("🔒 Administrador já existe.")
+
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()  # Isso é seguro, não recria dados se já existir
+        criar_admin_padrao()
     app.run(debug=True)
