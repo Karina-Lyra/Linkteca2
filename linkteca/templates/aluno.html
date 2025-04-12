@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Aluno - LinkTeca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('main.logout') }}" class="logout">Sair</a>
+        <h1>Bem-vindo(a), {{ aluno.nome }}</h1>
+
+        <h2>📚 Livros disponíveis da sua série</h2>
+        {% for livro in livros %}
+            <div class="livro-box">
+                <h3>{{ livro.titulo }}</h3>
+                <p><strong>Autor:</strong> {{ livro.autor }}</p>
+                <a href="{{ url_for('main.ver_livro', livro_id=livro.id) }}" class="button">Ver Livro</a>
+            </div>
+        {% else %}
+            <p>Nenhum livro disponível no momento.</p>
+        {% endfor %}
+
+        <h2>📘 Meus Livros</h2>
+        {% for acesso in acessos %}
+            <div class="livro-box">
+                <p><strong>{{ acesso.livro.titulo }}</strong> - {{ acesso.status }}</p>
+            </div>
+        {% else %}
+            <p>Você ainda não acessou livros.</p>
+        {% endfor %}
+
+        <a href="{{ url_for('main.estatisticas') }}" class="button">📊 Ver Estatísticas</a>
+    </div>
+</body>
+</html>

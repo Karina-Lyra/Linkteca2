@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Login - LinkTeca{% endblock %}
+{% block content %}
+    <h1><i class="fas fa-book-reader"></i> LinkTeca</h1>
+    <form method="POST" action="/login">
+        <input type="text" name="nome" placeholder="Nome" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <button type="submit" style="display:block; margin: 0 auto;"><i class="fas fa-sign-in-alt"></i> Entrar</button>
+    </form>
+    {% if erro %}
+        <p class="error">{{ erro }}</p>
+    {% endif %}
+    <p style="text-align:center; margin-top:15px;">
+        <a href="{{ url_for('main.recuperar_senha') }}">Recuperar senha</a> |
+        <a href="{{ url_for('main.cadastro') }}">Cadastrar-se</a>
+    </p>
+{% endblock %}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro - LinkTeca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(rgba(0, 0, 50, 0.9), rgba(0, 0, 50, 0.9)),
+                        url('https://images.unsplash.com/photo-1512820790803-83ca734da794');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1a237e;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        h1 i {
+            margin-right: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 18px;
+            background-color: #1976d2;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #0d47a1;
+        }
+
+        .logo img {
+            max-width: 100px;
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        .toggle {
+            margin-top: 15px;
+            font-size: 0.85em;
+        }
+
+        .toggle a {
+            color: #1976d2;
+            text-decoration: none;
+        }
+
+        .toggle a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #camposAluno, #camposProfessor {
+            display: none;
+            width: 100%;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #camposAluno input, #camposProfessor input {
+            margin: 8px 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        </div>
+        <h1><i class="fas fa-user-plus"></i> Criar Conta</h1>
+        <form method="POST" action="/cadastrar">
+            <select name="tipo" required onchange="exibirCampos(this.value)">
+                <option value="">Selecione o tipo</option>
+                <option value="aluno">Aluno</option>
+                <option value="professor">Professor</option>
+            </select>
+
+            <input type="text" name="nome" placeholder="Nome completo" required>
+            <input type="password" name="senha" placeholder="Senha" required>
+            <input type="email" name="email" placeholder="E-mail (opcional)">
+
+            <div id="camposAluno">
+                <input type="text" name="matricula" placeholder="Matrícula">
+                <input type="text" name="instituicao" placeholder="Instituição">
+                <input type="text" name="serie" placeholder="Série">
+            </div>
+
+            <div id="camposProfessor">
+                <input type="text" name="chave" placeholder="Chave de cadastro (professor)">
+            </div>
+
+            {% if erro %}
+                <p class="error-message">{{ erro }}</p>
+            {% endif %}
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <div class="toggle">
+            Já tem conta? <a href="{{ url_for('main.login') }}">Entrar</a>
+        </div>
+    </div>
+
+    <script>
+        function exibirCampos(tipo) {
+            const camposAluno = document.getElementById('camposAluno');
+            const camposProfessor = document.getElementById('camposProfessor');
+            const emailInput = document.querySelector('input[name="email"]');
+
+            if (tipo === 'aluno') {
+                camposAluno.style.display = 'flex';
+                camposProfessor.style.display = 'none';
+                emailInput.required = false;
+                emailInput.placeholder = "E-mail (opcional)";
+            } else if (tipo === 'professor') {
+                camposAluno.style.display = 'none';
+                camposProfessor.style.display = 'flex';
+                emailInput.required = true;
+                emailInput.placeholder = "E-mail";
+            } else {
+                camposAluno.style.display = 'none';
+                camposProfessor.style.display = 'none';
+                emailInput.required = false;
+                emailInput.placeholder = "E-mail";
+            }
+        }
+    </script>
+</body>
+</html>

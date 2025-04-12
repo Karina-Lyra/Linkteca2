@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel do Professor - LinkTeca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('main.logout') }}" class="logout">Sair</a>
+        <h1>Olá, Professor {{ professor.nome }}</h1>
+
+        <h2>📥 Cadastrar Aluno</h2>
+        <form method="POST" action="{{ url_for('main.cadastrar_aluno') }}">
+            <input type="text" name="nome" placeholder="Nome do aluno" required>
+            <input type="text" name="matricula" placeholder="Matrícula" required>
+            <input type="text" name="instituicao" placeholder="Instituição" required>
+            <button type="submit">Cadastrar Aluno</button>
+        </form>
+
+        <h2>📚 Cadastrar Livro</h2>
+        <form method="POST" action="{{ url_for('main.cadastrar_livro') }}" enctype="multipart/form-data">
+            <input type="text" name="titulo" placeholder="Título do livro" required>
+            <input type="text" name="autor" placeholder="Autor" required>
+            <input type="text" name="serie" placeholder="Série" required>
+            <input type="file" name="pdf" accept=".pdf" required>
+            <button type="submit">Cadastrar Livro</button>
+        </form>
+
+        <a href="{{ url_for('main.estatisticas') }}" class="button">📊 Ver Estatísticas</a>
+    </div>
+</body>
+</html>

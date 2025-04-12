@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ livro.titulo }} - LinkTeca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('main.painel') }}" class="logout">Voltar</a>
+        <h1>{{ livro.titulo }}</h1>
+        <p><strong>Autor:</strong> {{ livro.autor }}</p>
+        <a href="{{ url_for('main.baixar_livro', livro_id=livro.id) }}" class="button">📥 Baixar PDF</a>
+
+        <h2>✏️ Avaliar e comentar</h2>
+        <form method="POST" action="{{ url_for('main.comentar_livro', livro_id=livro.id) }}">
+            <label for="avaliacao">Avaliação (1 a 5):</label>
+            <input type="number" name="avaliacao" min="1" max="5" required>
+            <textarea name="comentario" placeholder="Deixe seu comentário..." rows="4" required></textarea>
+            <button type="submit">Enviar</button>
+        </form>
+
+        <h2>🗨️ Comentários</h2>
+        {% for acesso in comentarios %}
+            <div class="comentario">
+                <strong>{{ acesso.usuario.nome }}</strong> - {{ acesso.avaliacao }} ⭐
+                <p>{{ acesso.comentario }}</p>
+            </div>
+        {% else %}
+            <p>Este livro ainda não possui comentários.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

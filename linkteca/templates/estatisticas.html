@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Estatísticas - LinkTeca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="{{ url_for('main.painel') }}" class="logout">Voltar</a>
+        <h1>📊 Estatísticas da Leitura</h1>
+
+        <h2>🔥 Top 3 livros mais baixados</h2>
+        <ul>
+            {% for livro in top_baixados %}
+                <li>{{ livro.titulo }} ({{ livro.total }} downloads)</li>
+            {% else %}
+                <li>Nenhum dado encontrado.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>⭐ Top 3 livros melhor avaliados</h2>
+        <ul>
+            {% for livro in top_avaliados %}
+                <li>{{ livro.titulo }} (Média: {{ livro.media }} estrelas)</li>
+            {% else %}
+                <li>Nenhum dado encontrado.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>🗨️ Últimos 10 comentários</h2>
+        <ul>
+            {% for item in ultimos_comentarios %}
+                <li><strong>{{ item.usuario }}</strong> em <em>{{ item.livro }}</em>: "{{ item.comentario }}"</li>
+            {% else %}
+                <li>Nenhum comentário recente.</li>
+            {% endfor %}
+        </ul>
+
+        <h2>🏆 Usuários mais ativos</h2>
+        <ul>
+            {% for usuario in mais_ativos %}
+                <li>{{ usuario.nome }} ({{ usuario.total }} interações)</li>
+            {% else %}
+                <li>Nenhum dado encontrado.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

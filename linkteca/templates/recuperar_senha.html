@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Recuperar Senha - LinkTeca</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .login-form-container {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            margin-bottom: 20px;
+            text-align: center; /* Centraliza o conteúdo dentro do container */
+        }
+
+        .login-form-container .logo {
+            margin-bottom: 20px;
+        }
+
+        .login-form-container .logo img {
+            max-width: 120px;
+            height: auto;
+            margin: 0 auto; /* Centraliza a imagem horizontalmente */
+            display: block;
+        }
+
+        .login-form-container h1 {
+            font-size: 1.8em;
+            color: #1a237e;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .login-form-container h1 span {
+            color: #0d47a1;
+            font-weight: 700;
+            font-size: 2em;
+        }
+
+
+        .login-form select {
+            padding: 12px 14px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-form select:focus {
+            outline: none;
+            border-color: #0d47a1;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form input[type="number"] {
+            padding: 12px 14px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-form input[type="number"]:focus {
+            outline: none;
+            border-color: #0d47a1;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form input[type="email"] {
+            padding: 12px 14px;
+            margin: 10px 0;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-form input[type="email"]:focus {
+            outline: none;
+            border-color: #0d47a1;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .matricula-input-container {
+            display: none;
+        }
+
+        .login-form-container .links {
+            margin-top: 20px;
+        }
+
+        .login-form-container .links a {
+            color: #0d47a1;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-form-container .links a:hover {
+            color: #1a237e;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form-container">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo LinkTeca">
+            </div>
+            <h1>🔑 Recuperar Senha</h1>
+            <form class="login-form" method="POST">
+                <input type="text" name="nome" placeholder="👤 Nome" required>
+                <select name="tipo" id="tipo-usuario" required>
+                    <option value="">Tipo de Usuário</option>
+                    <option value="aluno">Aluno</option>
+                    <option value="professor">Professor</option>
+                </select>
+                <div class="matricula-input-container" id="matricula-container">
+                    <input type="number" name="matricula" placeholder="🔢 Matrícula">
+                </div>
+                <input type="email" name="email" id="email-input" placeholder="📧 Email">
+                <button type="submit">Enviar</button>
+            </form>
+            <div class="links">
+                <a href="{{ url_for('main.login') }}">Voltar ao Login</a>
+            </div>
+        </div>
+        {% if mensagem %}
+            <p style="color: green;">{{ mensagem }}</p>
+        {% elif erro %}
+            <p style="color: red;">{{ erro }}</p>
+        {% endif %}
+    </div>
+    <script>
+        const tipoUsuarioSelect = document.getElementById('tipo-usuario');
+        const matriculaContainer = document.getElementById('matricula-container');
+        const emailInput = document.getElementById('email-input');
+
+        tipoUsuarioSelect.addEventListener('change', function() {
+            if (this.value === 'aluno') {
+                matriculaContainer.style.display = 'block';
+                emailInput.required = false;
+                emailInput.placeholder = "📧 Email (opcional)";
+            } else {
+                matriculaContainer.style.display = 'none';
+                emailInput.required = true;
+                emailInput.placeholder = "📧 Email";
+            }
+        });
+    </script>
+</body>
+</html>
